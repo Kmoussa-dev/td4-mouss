@@ -61,11 +61,18 @@ public class Facade {
     public Produit plusGrosseVenteMontant() {
         Query query = em.createQuery("select new jpa.JpaLigneVente(lv.quantite,lv.produit) from LigneVente lv");
         List<JpaLigneVente> jpaLigneVentes = query.getResultList();
-        return jpaLigneVentes.stream()
+
+        Produit p =jpaLigneVentes.stream()
                 .max(Comparator.comparingDouble(JpaLigneVente::getChiffreDAffaire))
                 .get()
                 .getProduit();
+        System.out.println(" plus grosse vente : "+ p.getIdProduit());
+//        Query q = em.createQuery("SELECT l.produit FROM LigneVente l WHERE (l.quantite * l.produit.prixVente) IN (SELECT MAX(q.quantite * q.produit.prixVente) FROM LigneVente q)");
+//        Produit p=(Produit) q.getSingleResult();
+//        System.out.println("plus grosse vente : " + p.getIdProduit());
 
+//        return (Produit) q.getSingleResult();
+    return p;
     }
 
     /**
@@ -136,7 +143,7 @@ public class Facade {
         query.setParameter("idCategorie",idCategorie);
         List<JpaCategorie> categories= query.getResultList();
         return categories.stream()
-                .map(jpaCategorie -> jpaCategorie.produitmoinchere())
+                .map(JpaCategorie::produitmoinchere)
                 .collect(Collectors.toList()).get(0);
     }
 

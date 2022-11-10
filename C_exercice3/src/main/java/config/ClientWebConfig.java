@@ -27,7 +27,7 @@ import java.util.Properties;
 // On ajoute EnableTransactionManagement
 @EnableWebMvc
     @Configuration
-    @ComponentScan(basePackages = {"controllers"})
+    @ComponentScan(basePackages = {"controllers","services"})
 @EnableTransactionManagement
     public class ClientWebConfig implements WebMvcConfigurer {
 
